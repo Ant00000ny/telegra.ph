@@ -1,18 +1,23 @@
 package method
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import `object`.PageViews
+import util.objectMapper
 
 data class GetViews(
     @field:JsonProperty("path")
-    val path: String,
+    var path: String? = null,
     @field:JsonProperty("year")
-    val year : Int,
+    var year: Int? = null,
     @field:JsonProperty("month")
-    val month : Int,
+    var month: Int? = null,
     @field:JsonProperty("day")
-    val day : Int,
+    var day: Int? = null,
     @field:JsonProperty("hour")
-    val hour : Int,
-) : Method {
-    override fun getUrlPath() = "getViews"
+    var hour: Int? = null,
+) : Method<PageViews> {
+    override fun urlPath() = "getViews"
+    override fun deserializeResponse(response: String): PageViews {
+        return objectMapper.readValue(response, PageViews::class.java)
+    }
 }

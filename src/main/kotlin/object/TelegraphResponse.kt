@@ -1,12 +1,13 @@
 package `object`
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.databind.JsonNode
 
 data class TelegraphResponse<T>(
     @field:JsonProperty("ok")
-    val ok: String,
+    val ok: Boolean,
     @field:JsonProperty("error")
-    val error: String,
+    val error: String?,
     @field:JsonProperty("result")
-    val result: String,
+    val result: JsonNode?,
 )

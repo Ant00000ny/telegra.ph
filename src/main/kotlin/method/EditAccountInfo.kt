@@ -1,16 +1,21 @@
 package method
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import `object`.Account
+import util.objectMapper
 
 data class EditAccountInfo(
     @field:JsonProperty("access_token")
-    val accessToken: String,
+    var accessToken: String? = null,
     @field:JsonProperty("short_name")
-    val shortName: String,
+    var shortName: String? = null,
     @field:JsonProperty("author_name")
-    val authorName: String,
+    var authorName: String? = null,
     @field:JsonProperty("author_url")
-    val authorUrl: String,
-) : Method {
-    override fun getUrlPath() = "editAccountInfo"
+    var authorUrl: String? = null,
+) : Method<Account> {
+    override fun urlPath() = "editAccountInfo"
+    override fun deserializeResponse(response: String): Account {
+        return objectMapper.readValue(response, Account::class.java)
+    }
 }

@@ -4,21 +4,21 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 data class Page(
     @field:JsonProperty("path")
-    val path: String,
+    val path: String?,
     @field:JsonProperty("url")
-    val url: String,
+    val url: String?,
     @field:JsonProperty("title")
-    val title: String,
+    val title: String?,
     @field:JsonProperty("description")
-    val description: String,
+    val description: String?,
     @field:JsonProperty("author_name")
-    val authorName: String,
+    val authorName: String?,
     @field:JsonProperty("author_url")
-    val authorUrl: String,
+    val authorUrl: String?,
     @field:JsonProperty("image_url")
-    val imageUrl: String,
+    val imageUrl: String?,
     @field:JsonProperty("content")
-    val content: List<Node>,
+    val content: List<Node>?,
     @field:JsonProperty("can_edit")
-    val canEdit: Boolean,
+    val canEdit: Boolean?,
 )

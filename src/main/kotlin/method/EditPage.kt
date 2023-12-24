@@ -2,22 +2,27 @@ package method
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import `object`.Node
+import `object`.Page
+import util.objectMapper
 
 data class EditPage(
     @field:JsonProperty("access_token")
-    val accessToken: String,
+    var accessToken: String? = null,
     @field:JsonProperty("path")
-    val path: String,
+    var path: String? = null,
     @field:JsonProperty("title")
-    val title: String,
+    var title: String? = null,
     @field:JsonProperty("content")
-    val content: List<Node>,
+    var content: List<Node>? = null,
     @field:JsonProperty("author_name")
-    val authorName: String,
+    var authorName: String? = null,
     @field:JsonProperty("author_url")
-    val authorUrl: String,
+    var authorUrl: String? = null,
     @field:JsonProperty("return_content")
-    val returnContent: Boolean,
-) : Method {
-    override fun getUrlPath() = "editPage"
+    var returnContent: Boolean? = null,
+) : Method<Page> {
+    override fun urlPath() = "editPage"
+    override fun deserializeResponse(response: String): Page {
+        return objectMapper.readValue(response, Page::class.java)
+    }
 }

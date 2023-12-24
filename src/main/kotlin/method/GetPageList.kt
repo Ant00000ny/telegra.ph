@@ -1,14 +1,19 @@
 package method
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import `object`.PageList
+import util.objectMapper
 
 data class GetPageList(
     @field:JsonProperty("access_token")
-    val accessToken: String,
+    var accessToken: String? = null,
     @field:JsonProperty("offset")
-    val offset: Int,
+    var offset: Int? = null,
     @field:JsonProperty("limit")
-    val limit: Int,
-) : Method {
-    override fun getUrlPath() = "getPageList"
+    var limit: Int? = null,
+) : Method<PageList> {
+    override fun urlPath() = "getPageList"
+    override fun deserializeResponse(response: String): PageList {
+        return objectMapper.readValue(response, PageList::class.java)
+    }
 }

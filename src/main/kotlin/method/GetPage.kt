@@ -1,12 +1,17 @@
 package method
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import `object`.Page
+import util.objectMapper
 
 data class GetPage(
     @field:JsonProperty("path")
-    val path: String,
+    var path: String? = null,
     @field:JsonProperty("return_content")
-    val returnContent: Boolean,
-) : Method {
-    override fun getUrlPath() = "getPage"
+    var returnContent: Boolean? = null,
+) : Method<Page> {
+    override fun urlPath() = "getPage"
+    override fun deserializeResponse(response: String): Page {
+        return objectMapper.readValue(response, Page::class.java)
+    }
 }
