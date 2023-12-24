@@ -5,7 +5,8 @@ import com.fasterxml.jackson.core.type.TypeReference
 import `object`.Node
 import `object`.Page
 import `object`.TelegraphResponse
-import objectMapper
+import util.BASE_URL
+import util.objectMapper
 
 data class EditPage(
     @field:JsonProperty("access_token")
@@ -23,7 +24,7 @@ data class EditPage(
     @field:JsonProperty("return_content")
     var returnContent: Boolean? = null,
 ) : Method<Page> {
-    override fun urlPath() = "editPage"
+    override fun urlPath() = "${BASE_URL}editPage"
     override fun deserializeResponse(responseJson: String): TelegraphResponse<Page> {
         return objectMapper.readValue(responseJson, object : TypeReference<TelegraphResponse<Page>>() {})
     }

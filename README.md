@@ -6,7 +6,7 @@ on [telegraph](https://github.com/rubenlagus/Telegraph).
 ### Usage
 
 ```kotlin
-fun main() {
+fun util.main() {
     // Create account
     val account: Account = CreateAccount()
         .apply {

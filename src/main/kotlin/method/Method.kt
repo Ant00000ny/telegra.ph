@@ -1,19 +1,18 @@
 package method
 
-import BASE_URL
-import defaultClient
 import exception.TelegraphException
 import `object`.TelegraphResponse
-import objectMapper
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
+import util.defaultClient
+import util.objectMapper
 
 interface Method<R : Any> {
     fun urlPath(): String
 
     fun sendRequest(): R {
         val request = Request.Builder()
-            .url(BASE_URL + this.urlPath())
+            .url(urlPath())
             .post(objectMapper.writeValueAsString(this).toRequestBody())
             .header("Content-Type", "application/json")
             .header("charset", Charsets.UTF_8.name())

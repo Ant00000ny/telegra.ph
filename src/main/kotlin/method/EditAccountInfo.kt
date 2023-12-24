@@ -4,7 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.core.type.TypeReference
 import `object`.Account
 import `object`.TelegraphResponse
-import objectMapper
+import util.BASE_URL
+import util.objectMapper
 
 data class EditAccountInfo(
     @field:JsonProperty("access_token")
@@ -16,7 +17,7 @@ data class EditAccountInfo(
     @field:JsonProperty("author_url")
     var authorUrl: String? = null,
 ) : Method<Account> {
-    override fun urlPath() = "editAccountInfo"
+    override fun urlPath() = "${BASE_URL}editAccountInfo"
     override fun deserializeResponse(responseJson: String): TelegraphResponse<Account> {
         return objectMapper.readValue(responseJson, object : TypeReference<TelegraphResponse<Account>>() {})
     }
