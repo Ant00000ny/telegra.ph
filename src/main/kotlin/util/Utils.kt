@@ -7,8 +7,9 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import okhttp3.OkHttpClient
 
-const val BASE_URL = "https://api.telegra.ph/"
-const val UPLOAD_URL = "https://telegra.ph/upload/"
+const val TELEGRAPH_API_BASE_URL = "https://api.telegra.ph/"
+const val TELEGRAPH_BASE_URL = "https://telegra.ph/"
+const val UPLOAD_BASE_URL = "${TELEGRAPH_BASE_URL}upload/"
 
 val defaultClient = OkHttpClient.Builder()
     .build()

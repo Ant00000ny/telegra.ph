@@ -7,7 +7,7 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
-import util.UPLOAD_URL
+import util.UPLOAD_BASE_URL
 import util.defaultClient
 import util.objectMapper
 import java.io.File
@@ -18,10 +18,15 @@ import java.io.File
 data class Upload(
     var file: File,
 ) {
-    fun urlPath() = UPLOAD_URL
+    fun urlPath() = UPLOAD_BASE_URL
 
     fun deserializeResponse(responseJson: String): UploadedFile {
-        return objectMapper.readValue(responseJson, object : TypeReference<List<UploadedFile>>() {}).first()
+        val rootNode = objectMapper.readTree(responseJson)
+        if (rootNode.isObject) {
+            throw TelegraphException("Upload error: ${rootNode.get("error").asText()}")
+        } else {
+            return objectMapper.readValue(responseJson, object : TypeReference<List<UploadedFile>>() {}).first()
+        }
     }
 
     fun sendRequest(): UploadedFile {
