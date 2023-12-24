@@ -1,9 +1,11 @@
 package method
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.core.type.TypeReference
 import `object`.Node
 import `object`.Page
-import util.objectMapper
+import `object`.TelegraphResponse
+import objectMapper
 
 data class CreatePage(
     @field:JsonProperty("access_token")
@@ -20,7 +22,7 @@ data class CreatePage(
     var returnContent: Boolean? = null,
 ) : Method<Page> {
     override fun urlPath() = "createPage"
-    override fun deserializeResponse(response: String): Page {
-        return objectMapper.readValue(response, Page::class.java)
+    override fun deserializeResponse(responseJson: String): TelegraphResponse<Page> {
+        return objectMapper.readValue(responseJson, object : TypeReference<TelegraphResponse<Page>>() {})
     }
 }

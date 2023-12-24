@@ -1,9 +1,10 @@
 package method
 
-import util.BASE_URL
-import util.defaultClient
+import BASE_URL
+import defaultClient
 import exception.TelegraphException
-import util.objectMapper
+import `object`.TelegraphResponse
+import objectMapper
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 
@@ -21,9 +22,10 @@ interface Method<R : Any> {
         return defaultClient
             .newCall(request)
             .execute()
-            .let { it.body ?: throw TelegraphException("Response body is null") }
-            .let { deserializeResponse(it.string()) }
+            .let { it.body?.string() ?: throw TelegraphException("Response body is null") }
+            .let { deserializeResponse(it) }
+            .let { it.result ?: throw TelegraphException(it.error ?: "Unknown error") }
     }
 
-    fun deserializeResponse(response: String): R
+    fun deserializeResponse(responseJson: String): TelegraphResponse<R>
 }

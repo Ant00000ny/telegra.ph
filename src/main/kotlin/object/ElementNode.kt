@@ -3,10 +3,10 @@ package `object`
 import com.fasterxml.jackson.annotation.JsonProperty
 
 data class ElementNode(
-    @field:JsonProperty("name")
-    val name: String?,
-    @field:JsonProperty("attributes")
-    val attributes: Map<String, String>?,
+    @field:JsonProperty("tag")
+    var tag: String? = null,
+    @field:JsonProperty("attrs")
+    var attrs: Map<String, String>? = null,
     @field:JsonProperty("children")
-    val children: List<Node>?,
+    var children: List<Node>? = null,
 ) : Node()

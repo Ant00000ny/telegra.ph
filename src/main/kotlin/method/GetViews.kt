@@ -1,8 +1,10 @@
 package method
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.core.type.TypeReference
 import `object`.PageViews
-import util.objectMapper
+import `object`.TelegraphResponse
+import objectMapper
 
 data class GetViews(
     @field:JsonProperty("path")
@@ -17,7 +19,7 @@ data class GetViews(
     var hour: Int? = null,
 ) : Method<PageViews> {
     override fun urlPath() = "getViews"
-    override fun deserializeResponse(response: String): PageViews {
-        return objectMapper.readValue(response, PageViews::class.java)
+    override fun deserializeResponse(responseJson: String): TelegraphResponse<PageViews> {
+        return objectMapper.readValue(responseJson, object : TypeReference<TelegraphResponse<PageViews>>() {})
     }
 }
