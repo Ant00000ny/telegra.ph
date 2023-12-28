@@ -3,7 +3,7 @@ package method
 import com.fasterxml.jackson.core.type.TypeReference
 import exception.TelegraphException
 import `object`.UploadedFile
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -30,12 +30,10 @@ data class Upload(
     }
 
     fun sendRequest(): UploadedFile {
-        val fileMediaType = when (file.extension) {
-            "png" -> "image/png"
-            "jpg" -> "image/jpeg"
-            "gif" -> "image/gif"
-            else -> throw TelegraphException("Unsupported file type")
-        }.toMediaTypeOrNull()
+        val fileMediaType = "image/" + when (file.extension) {
+            "jpg" -> "jpeg"
+            else -> file.extension
+        }
 
 
         val request = Request.Builder()
@@ -46,7 +44,7 @@ data class Upload(
                     .addFormDataPart(
                         "file",
                         file.name,
-                        file.readBytes().toRequestBody(fileMediaType)
+                        file.readBytes().toRequestBody(fileMediaType.toMediaType())
                     )
                     .build()
             )
