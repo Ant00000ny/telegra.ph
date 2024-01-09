@@ -10,13 +10,14 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import util.UPLOAD_BASE_URL
 import util.defaultClient
 import util.objectMapper
-import java.io.File
+import java.security.MessageDigest
 
 /**
  * Non-standard api
  */
 data class Upload(
-    var file: File,
+    val imageBytes: ByteArray,
+    var imageFormat: String,
 ) {
     fun urlPath() = UPLOAD_BASE_URL
 
@@ -29,10 +30,11 @@ data class Upload(
         }
     }
 
+    @OptIn(ExperimentalStdlibApi::class)
     fun sendRequest(): UploadedFile {
-        val fileMediaType = "image/" + when (file.extension) {
+        val fileMediaType = "image/" + when (imageFormat) {
             "jpg" -> "jpeg"
-            else -> file.extension
+            else -> imageFormat
         }
 
 
@@ -43,8 +45,8 @@ data class Upload(
                     .setType(MultipartBody.FORM)
                     .addFormDataPart(
                         "file",
-                        file.name,
-                        file.readBytes().toRequestBody(fileMediaType.toMediaType())
+                        MessageDigest.getInstance("MD5").digest(imageBytes).toHexString(),
+                        imageBytes.toRequestBody(fileMediaType.toMediaType())
                     )
                     .build()
             )
@@ -57,5 +59,23 @@ data class Upload(
             .execute()
             .let { it.body?.string() ?: throw TelegraphException("Response body is null") }
             .let { deserializeResponse(it) }
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Upload
+
+        if (!imageBytes.contentEquals(other.imageBytes)) return false
+        if (imageFormat != other.imageFormat) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = imageBytes.contentHashCode()
+        result = 31 * result + imageFormat.hashCode()
+        return result
     }
 }
